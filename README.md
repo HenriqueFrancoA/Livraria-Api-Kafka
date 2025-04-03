@@ -35,7 +35,7 @@ O sistema é composto pelos seguintes microserviços:
 
 1. Clone o repositório:
 ```bash
-git clone [URL_DO_REPOSITÓRIO]
+git clone https://github.com/HenriqueFrancoA/Livraria-Api-Kafka.git
 cd Livraria-Api-Kafka
 ```
 
