@@ -25,13 +25,13 @@ public class OrderResource {
 
     @Operation(summary = "Busca todos pedidos de um Usuário.")
     @GetMapping("/user/{id}")
-    public List<OrderDto> findByUser(@PathVariable Long id){
+    public List<Order> findByUser(@PathVariable Long id){
         return orderService.findByUser(id);
     }
 
     @Operation(summary = "Busca um pedido pelo ID.")
     @GetMapping("{id}")
-    public ResponseEntity<OrderDto> findById(@PathVariable Long id){
+    public ResponseEntity<Order> findById(@PathVariable Long id){
         return ResponseEntity.ok(orderService.findById(id));
     }
 

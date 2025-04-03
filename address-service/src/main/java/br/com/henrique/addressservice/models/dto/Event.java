@@ -15,13 +15,14 @@ public class Event {
     private String source;
     private String sagaType;
     private ESagaStatus status;
+    private boolean stockModified;
     private List<History> eventHistory;
     private LocalDateTime createdAt;
 
     public Event() {
     }
 
-    public Event(String id, String transactionId, Long orderId, Order payload, String source, String sagaType, ESagaStatus status, List<History> eventHistory, LocalDateTime createdAt) {
+    public Event(String id, String transactionId, Long orderId, Order payload, String source, String sagaType, ESagaStatus status, boolean stockModified, List<History> eventHistory, LocalDateTime createdAt) {
         this.id = id;
         this.transactionId = transactionId;
         this.orderId = orderId;
@@ -29,6 +30,7 @@ public class Event {
         this.source = source;
         this.sagaType = sagaType;
         this.status = status;
+        this.stockModified = stockModified;
         this.eventHistory = eventHistory;
         this.createdAt = createdAt;
     }
@@ -86,6 +88,14 @@ public class Event {
 
     public void setSagaType(String sagaType) {
         this.sagaType = sagaType;
+    }
+
+    public boolean isStockModified() {
+        return stockModified;
+    }
+
+    public void setStockModified(boolean stockModified) {
+        this.stockModified = stockModified;
     }
 
     public ESagaStatus getStatus() {

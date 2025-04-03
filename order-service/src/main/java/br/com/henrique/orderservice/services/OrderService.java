@@ -116,7 +116,7 @@ public class OrderService {
         return orderCreated;
     }
 
-    public OrderDto findById(Long id) {
+    public Order findById(Long id) {
         logger.info("Procurando pedido do ID: " + id);
         Order order = orderRepository.findById(id)
                 .orElseThrow(() ->  new EntityNotFoundException("ID do Pedido não encontrado."));
@@ -124,12 +124,19 @@ public class OrderService {
         List<ItemOrder> listItens = itemOrderService.findByOrderId(order.getId());
         order.setItems(listItens);
 
-        return DozerMapper.parseObject(order, OrderDto.class);
+        return order;
     }
 
-    public List<OrderDto> findByUser(Long id) {
+    public List<Order> findByUser(Long id) {
         logger.info("Procurando pedidos do User: " + id);
-        return DozerMapper.parseListObjects(orderRepository.findByUserId(id), OrderDto.class);
+        List<Order> listOrder = orderRepository.findByUserId(id);
+
+        for(Order order : listOrder){
+            List<ItemOrder> listItens = itemOrderService.findByOrderId(order.getId());
+            order.setItems(listItens);
+        }
+
+        return listOrder;
     }
 
     private Event createPayload(Order order, String sagaType){

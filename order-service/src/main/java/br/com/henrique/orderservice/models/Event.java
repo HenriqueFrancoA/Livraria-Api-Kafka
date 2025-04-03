@@ -27,6 +27,7 @@ public class Event {
     private String status;
     @Column(name = "saga_type") // Novo campo
     private String sagaType;
+    private boolean stockModified;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "event_id")
     private List<History> eventHistory;
@@ -36,7 +37,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(String id, String transactionId, Long orderId, Order payload, String source, String status, String sagaType, List<History> eventHistory, LocalDateTime createdAt) {
+    public Event(String id, String transactionId, Long orderId, Order payload, String source, String status, String sagaType, boolean stockModified, List<History> eventHistory, LocalDateTime createdAt) {
         this.id = id;
         this.transactionId = transactionId;
         this.orderId = orderId;
@@ -44,6 +45,7 @@ public class Event {
         this.source = source;
         this.status = status;
         this.sagaType = sagaType;
+        this.stockModified = stockModified;
         this.eventHistory = eventHistory;
         this.createdAt = createdAt;
     }
@@ -117,6 +119,14 @@ public class Event {
 
     public void setSagaType(String sagaType) {
         this.sagaType = sagaType;
+    }
+
+    public boolean isStockModified() {
+        return stockModified;
+    }
+
+    public void setStockModified(boolean stockModified) {
+        this.stockModified = stockModified;
     }
 
     public List<History> getEventHistory() {

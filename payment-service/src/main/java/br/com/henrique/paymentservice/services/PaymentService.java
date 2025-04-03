@@ -1,11 +1,12 @@
 package br.com.henrique.paymentservice.services;
 
 import br.com.henrique.paymentservice.enums.ESagaStatus;
-import br.com.henrique.paymentservice.enums.PaymentStatus;
 import br.com.henrique.paymentservice.exceptions.ValidationException;
-import br.com.henrique.paymentservice.mapper.DozerMapper;
 import br.com.henrique.paymentservice.models.Payment;
-import br.com.henrique.paymentservice.models.dto.*;
+import br.com.henrique.paymentservice.models.dto.Event;
+import br.com.henrique.paymentservice.models.dto.History;
+import br.com.henrique.paymentservice.models.dto.ItemOrder;
+import br.com.henrique.paymentservice.models.dto.PaymentStatusDto;
 import br.com.henrique.paymentservice.producer.KafkaProducer;
 import br.com.henrique.paymentservice.repositories.PaymentRepository;
 import br.com.henrique.paymentservice.utils.JsonUtil;
@@ -19,7 +20,8 @@ import java.time.LocalDateTime;
 import java.util.logging.Logger;
 
 import static br.com.henrique.paymentservice.enums.ESagaStatus.SUCCESS;
-import static br.com.henrique.paymentservice.enums.PaymentStatus.*;
+import static br.com.henrique.paymentservice.enums.PaymentStatus.CANCELED;
+import static br.com.henrique.paymentservice.enums.PaymentStatus.WAITING;
 
 @Service
 public class PaymentService {
@@ -42,15 +44,14 @@ public class PaymentService {
         this.kafkaProducer = kafkaProducer;
     }
 
-    public PaymentDto findById(Long id) {
+    public Payment findById(Long id) {
         logger.info("Procurando Pagamento do ID: " + id);
-        Payment payment = paymentRepository.findById(id)
-                .orElseThrow(() ->  new EntityNotFoundException("ID do Pagamento não encontrado."));
 
-        return DozerMapper.parseObject(payment, PaymentDto.class);
+        return paymentRepository.findById(id)
+                .orElseThrow(() ->  new EntityNotFoundException("ID do Pagamento não encontrado."));
     }
 
-    public PaymentDto updateStatus(Long id, PaymentStatusDto paymentStatusDto) {
+    public Payment updateStatus(Long id, PaymentStatusDto paymentStatusDto) {
         logger.info("Atualizando status do Pagamento, ID: " + id);
 
         ValidationUtils.verifyPaymentStatus(paymentStatusDto.getStatus());
@@ -62,7 +63,7 @@ public class PaymentService {
 
         payment.setStatus(paymentStatusDto.getStatus());
 
-        return DozerMapper.parseObject(paymentRepository.save(payment), PaymentDto.class);
+        return payment;
     }
     
     public void createPayment(Event event){

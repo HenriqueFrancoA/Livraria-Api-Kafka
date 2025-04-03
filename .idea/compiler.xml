@@ -7,11 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="orchestrator" />
-        <module name="payment" />
         <module name="address" />
         <module name="auth" />
-        <module name="order" />
+        <module name="old" />
         <module name="book" />
+        <module name="payment" />
+        <module name="order" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -24,6 +25,7 @@
       <module name="address" options="-parameters" />
       <module name="auth" options="-parameters" />
       <module name="book" options="-parameters" />
+      <module name="old" options="-parameters" />
       <module name="orchestrator" options="-parameters" />
       <module name="order" options="-parameters" />
       <module name="payment" options="-parameters" />

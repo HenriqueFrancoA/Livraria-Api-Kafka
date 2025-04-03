@@ -120,6 +120,7 @@ public class BookService  {
             checkBookValidation(event);
             stockQuantityAvailable(event);
 
+            event.setStockModified(true);
             handleSuccess(event);
         } catch (Exception ex) {
             logger.info("Erro ao validar items do pedido: " + ex.getMessage());
@@ -138,6 +139,7 @@ public class BookService  {
                 });
     }
 
+    @Transactional
     private void stockQuantityAvailable(Event event) {
         event.getPayload()
                 .getItems()
@@ -155,6 +157,8 @@ public class BookService  {
         try {
             checkBookValidation(event);
             changeStockQuantityToRefund(event);
+
+            event.setStockModified(true);
             handleSuccess(event);
         } catch (Exception ex) {
             logger.info("Erro ao devolver estoque para pedido cancelado: " + ex.getMessage());
@@ -193,9 +197,12 @@ public class BookService  {
 
         try {
             checkBookValidation(event);
-            changeStockQuantityToRefund(event);
-
-            addHistory(event, "Rollback executado para inventory");
+            if (event.isStockModified()) {
+                changeStockQuantityToRefund(event);
+                addHistory(event, "Rollback executado para inventory");
+            } else {
+                addHistory(event, "Rollback não necessário para inventory: estoque não foi modificado");
+            }
         } catch (Exception ex) {
             addHistory(event, "Rollback não executado para inventory: " + ex.getMessage());
         }

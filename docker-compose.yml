@@ -101,6 +101,108 @@ services:
     depends_on:
       - "kafka"
 
+  order-service:
+    build: './order-service'
+    container_name: order-service
+    depends_on:
+      - bookstore-order-db
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=bookstore-order-db
+      - DB_NAME=bookstore-order-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8092:8092
+
+  orchestrator-service:
+    build: './orchestrator-service'
+    container_name: orchestrator-service
+    depends_on:
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+    ports:
+      - 8088:8088
+
+  book-service:
+    build: './book-service'
+    container_name: book-service
+    depends_on:
+      - bookstore-book-db
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=bookstore-book-db
+      - DB_NAME=bookstore-book-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8093:8093
+
+  payment-service:
+    build: './payment-service'
+    container_name: payment-service
+    depends_on:
+      - bookstore-payment-db
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=bookstore-payment-db
+      - DB_NAME=bookstore-payment-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8091:8091
+
+  auth-service:
+    build: './auth-service'
+    container_name: auth-service
+    depends_on:
+      - bookstore-project-db
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=bookstore-project-db
+      - DB_NAME=bookstore-project-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8090:8090
+
+  address-service:
+    build: './address-service'
+    container_name: address-service
+    depends_on:
+      - bookstore-address-db
+      - kafka
+    networks:
+      - bookstore
+    environment:
+      - KAFKA_BROKER=kafka:29092
+      - DB_HOST=bookstore-address-db
+      - DB_NAME=bookstore-address-db
+      - DB_PORT=5432
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+    ports:
+      - 8094:8094
+
 networks:
   bookstore:
     driver: bridge

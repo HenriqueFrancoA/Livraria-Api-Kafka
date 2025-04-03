@@ -1,6 +1,7 @@
 package br.com.henrique.paymentservice.resources;
 
-import br.com.henrique.paymentservice.models.dto.*;
+import br.com.henrique.paymentservice.models.Payment;
+import br.com.henrique.paymentservice.models.dto.PaymentStatusDto;
 import br.com.henrique.paymentservice.services.PaymentService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -18,13 +19,13 @@ public class PaymentResource {
 
     @Operation(summary = "Busca um pagamento pelo ID.")
     @GetMapping("{id}")
-    public ResponseEntity<PaymentDto> findById(@PathVariable Long id){
+    public ResponseEntity<Payment> findById(@PathVariable Long id){
         return ResponseEntity.ok(paymentService.findById(id));
     }
 
     @Operation(summary = "Busca um pagamento pelo ID e caso exista atualiza o mesmo")
     @PutMapping("/status/{id}")
-    public ResponseEntity<PaymentDto> updateStatus(@PathVariable Long id, @RequestBody PaymentStatusDto paymentStatusDto) {
+    public ResponseEntity<Payment> updateStatus(@PathVariable Long id, @RequestBody PaymentStatusDto paymentStatusDto) {
         return ResponseEntity.ok(paymentService.updateStatus(id, paymentStatusDto));
     }
 

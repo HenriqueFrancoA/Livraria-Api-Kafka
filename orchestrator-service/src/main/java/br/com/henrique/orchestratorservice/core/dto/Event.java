@@ -14,6 +14,7 @@ public class Event {
     private String orderId;
     private Order payload;
     private String sagaType;
+    private boolean stockModified;
     private EEventSource source;
     private ESagaStatus status;
     private List<History> eventHistory;
@@ -22,12 +23,13 @@ public class Event {
     public Event() {
     }
 
-    public Event(String id, String transactionId, String orderId, Order payload, String sagaType, EEventSource source, ESagaStatus status, List<History> eventHistory, LocalDateTime createdAt) {
+    public Event(String id, String transactionId, String orderId, Order payload, String sagaType, boolean stockModified, EEventSource source, ESagaStatus status, List<History> eventHistory, LocalDateTime createdAt) {
         this.id = id;
         this.transactionId = transactionId;
         this.orderId = orderId;
         this.payload = payload;
         this.sagaType = sagaType;
+        this.stockModified = stockModified;
         this.source = source;
         this.status = status;
         this.eventHistory = eventHistory;
@@ -95,6 +97,14 @@ public class Event {
 
     public void setSagaType(String sagaType) {
         this.sagaType = sagaType;
+    }
+
+    public boolean isStockModified() {
+        return stockModified;
+    }
+
+    public void setStockModified(boolean stockModified) {
+        this.stockModified = stockModified;
     }
 
     public List<History> getEventHistory() {

@@ -1,5 +1,7 @@
 package br.com.henrique.bookservice.utils;
 
+import br.com.henrique.bookservice.exceptions.ValidationException;
+
 import java.math.BigDecimal;
 
 public class ValidationUtils {
@@ -8,7 +10,7 @@ public class ValidationUtils {
         int bookQuantityUpdated = bookQuantity - quantity;
 
         if(bookQuantityUpdated < 0)
-            throw new IllegalArgumentException("A quantidade inserida não pode ser maior que a quantidade de livros no estoque.");
+            throw new ValidationException("Quantidade solicitada (" + quantity + ") é maior que a disponível (" + bookQuantity + ")");
 
         return bookQuantityUpdated;
     }
